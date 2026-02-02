@@ -1,0 +1,35 @@
+name: Command Responder
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  respond:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Respond to commands
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const comment = context.payload.comment.body.trim();
+            const issue_number = context.payload.issue.number;
+
+            if (comment === '/hello') {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number,
+                body: 'Hello! 👋 Thanks for your comment.'
+              });
+            }
+
+            if (comment === '/status') {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number,
+                body: 'All systems operational ✅'
+              });
+            }
