@@ -4,29 +4,30 @@ const { closeInactiveIssues } = require("./closeIssues");
 
 const OWNER = process.env.GITHUB_OWNER;
 const REPO = process.env.GITHUB_REPO;
-const ISSUE_NUMBER = process.env.ISSUE_NUMBER; // usado solo para pruebas de comandos
-const COMMAND = process.env.COMMAND;           // usado solo para pruebas de comandos
+const ISSUE_NUMBER = process.env.ISSUE_NUMBER; // used only for testing commands
+const COMMAND = process.env.COMMAND;           // used only for testing commands
 
 async function main() {
-  const mode = process.env.MODE || "all"; // "close", "command" o "all"
+  const mode = process.env.MODE || "all"; // "close", "command" or "all"
 
   if (mode === "close" || mode === "all") {
-    console.log("Cerrando issues inactivos...");
+    console.log("Closing inactive issues...");
     await closeInactiveIssues(OWNER, REPO, 30);
-    console.log("Proceso de cierre de issues finalizado.");
+    console.log("Inactive issues closed.");
   }
 
   if (mode === "command" || mode === "all") {
     if (COMMAND && ISSUE_NUMBER) {
-      console.log(`Procesando comando: ${COMMAND}`);
+      console.log(`Processing command: ${COMMAND}`);
       await handleCommand(COMMAND, { owner: OWNER, repo: REPO, issue_number: ISSUE_NUMBER });
-      console.log("Comando procesado.");
+      console.log("Command processed.");
     } else {
-      console.log("No hay comando definido. Saltando paso de comandos.");
+      console.log("No command provided. Skipping command step.");
     }
   }
 }
 
 main().catch(err => {
-  console.error("Error en ejecución del bot:", err);
+  console.error("Bot execution error:", err);
 });
+
