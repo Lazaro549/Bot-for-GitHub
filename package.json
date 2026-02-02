@@ -1,0 +1,24 @@
+{
+  "name": "github-bot",
+  "version": "1.0.0",
+  "description": "A GitHub bot to close inactive issues and respond to commands.",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "close-issues": "node src/closeIssues.js",
+    "handle-commands": "node src/commands.js"
+  },
+  "keywords": [
+    "github",
+    "bot",
+    "automation",
+    "issues",
+    "commands"
+  ],
+  "author": "Lazaro549",
+  "license": "MIT",
+  "dependencies": {
+    "@octokit/rest": "^20.0.0",
+    "dotenv": "^16.3.1"
+  }
+}
