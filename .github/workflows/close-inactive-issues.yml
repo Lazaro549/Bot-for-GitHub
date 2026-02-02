@@ -2,7 +2,7 @@ name: Close Inactive Issues
 
 on:
   schedule:
-    - cron: '0 0 * * 0'  # Runs every Sunday at midnight UTC
+    - cron: '0 0 * * 0'
   workflow_dispatch:
 
 jobs:
@@ -12,33 +12,20 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Close inactive issues
-        uses: actions/github-script@v6
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const daysInactive = 30; // customize inactivity period
-            const issues = await github.paginate(
-              github.rest.issues.listForRepo,
-              { owner: context.repo.owner, repo: context.repo.repo, state: 'open' }
-            );
+          node-version: '18'
 
-            const now = new Date();
-            for (const issue of issues) {
-              const updatedAt = new Date(issue.updated_at);
-              const diffDays = (now - updatedAt) / (1000 * 60 * 60 * 24);
-              if (diffDays > daysInactive) {
-                await github.rest.issues.update({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  issue_number: issue.number,
-                  state: 'closed'
-                });
-                await github.rest.issues.createComment({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  issue_number: issue.number,
-                  body: 'Closing this issue due to inactivity. Feel free to reopen if needed.'
-                });
-              }
-            }
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run closeIssues script
+        run: |
+          export GITHUB_OWNER=${{ github.repository_owner }}
+          export GITHUB_REPO=${{ github.repository }}
+          export MODE=close
+          node src/index.js
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
