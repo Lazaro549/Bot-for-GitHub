@@ -1,12 +1,13 @@
 # GitHub Automation Bot
 
-A GitHub bot to **automatically close inactive issues** and **respond to simple commands** in issues or pull requests.
+A GitHub bot to **automatically close inactive issues** and **respond to simple commands**.
 
 ## Features
 
-- 🔒 Close issues that have been inactive for a configurable number of days.
+- 🔒 Close inactive issues after a configurable number of days.
 - 💬 Respond to simple commands like `/hello` or `/status`.
 - ⚡ Fully automated via GitHub Actions.
+- 🛠 Modular and easy to extend with new commands.
 
 ## Installation
 
@@ -18,5 +19,9 @@ A GitHub bot to **automatically close inactive issues** and **respond to simple 
    ```bash
    npm install
 3. Configure `.env` file with your GitHub token:
-   ```bash
+
+    ```bash
    GITHUB_TOKEN=your_token_here
+   GITHUB_OWNER=YourGitHubUsername
+   GITHUB_REPO=Bot-for-GitHub
+
