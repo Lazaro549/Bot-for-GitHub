@@ -8,28 +8,25 @@ jobs:
   respond:
     runs-on: ubuntu-latest
     steps:
-      - name: Respond to commands
-        uses: actions/github-script@v6
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const comment = context.payload.comment.body.trim();
-            const issue_number = context.payload.issue.number;
+          node-version: '18'
 
-            if (comment === '/hello') {
-              await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number,
-                body: 'Hello! 👋 Thanks for your comment.'
-              });
-            }
+      - name: Install dependencies
+        run: npm install
 
-            if (comment === '/status') {
-              await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number,
-                body: 'All systems operational ✅'
-              });
-            }
+      - name: Handle comment command
+        run: |
+          export GITHUB_OWNER=${{ github.repository_owner }}
+          export GITHUB_REPO=${{ github.repository }}
+          export ISSUE_NUMBER=${{ github.event.issue.number }}
+          export COMMAND="${{ github.event.comment.body }}"
+          export MODE=command
+          node src/index.js
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
