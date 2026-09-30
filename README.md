@@ -25,3 +25,12 @@ A GitHub bot to **automatically close inactive issues** and **respond to simple 
    GITHUB_OWNER=YourGitHubUsername
    GITHUB_REPO=Bot-for-GitHub
 
+## 💸 Donations
+
+If you'd like to support this project:
+
+- 🇦🇷 ARS (Argentina)  
+  Alias: `lazaro.503.alaba.mp`
+
+- 🌎 USD (Argentina only, local transfers)  
+  Alias: `ahogada.duras.foca`
